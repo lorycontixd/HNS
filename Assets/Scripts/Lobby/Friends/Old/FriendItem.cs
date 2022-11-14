@@ -17,7 +17,7 @@ public class FriendItem : MonoBehaviour
     public GameObject onlineStateImage;
     public GameObject offlineStateImage;
 
-    public UnityEvent<User> onMoreInfo;
+    public UnityEvent<FriendItem> onMoreInfo;
 
 
     private void Start()
@@ -54,7 +54,7 @@ public class FriendItem : MonoBehaviour
     {
         if (friend != null)
         {
-            onMoreInfo?.Invoke(friend);
+            onMoreInfo?.Invoke(this);
         }
     }
 }

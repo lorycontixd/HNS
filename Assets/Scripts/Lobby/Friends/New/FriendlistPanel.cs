@@ -7,6 +7,7 @@ using UnityEngine;
 public class FriendlistPanel : MonoBehaviour, IDbListener
 {
     public GameObject mainPanel;
+    public FriendInfoPanelNew friendInfoPanel;
     private List<FriendItem> friendItems = new List<FriendItem>();
 
     [Tooltip("Parent that only holds prefabs of accepted friendships")] public Transform friendsHolder;
@@ -19,6 +20,7 @@ public class FriendlistPanel : MonoBehaviour, IDbListener
 
     private void Start()
     {
+        friendInfoPanel.gameObject.SetActive(false);
 
         FriendsManager.Instance.onFriendStatusUpdate.AddListener(OnFriendStatusUpdate);
     }
@@ -62,6 +64,7 @@ public class FriendlistPanel : MonoBehaviour, IDbListener
             item.SetFriend(user);
             item.UpdateUI();
             friendItems.Add(item);
+            item.onMoreInfo.AddListener(OnItemMoreInfo);
         }
         foreach(User user in pendingFriends)
         {
@@ -88,7 +91,20 @@ public class FriendlistPanel : MonoBehaviour, IDbListener
 
             FriendItem item = FindFriend(friend.UserId);
             item.SetStatus(friend.IsOnline);
+            if (friendInfoPanel.gameObject.activeSelf && friendInfoPanel.friend.username == item.friend.username)
+            {
+                friendInfoPanel.SetOnline(friend.IsOnline);
+            }
         }
+    }
+
+    public void OnItemMoreInfo(FriendItem item)
+    {
+        User friendClicked = item.friend;
+        friendInfoPanel.SetFriend(friendClicked);
+        friendInfoPanel.UpdateUI();
+        friendInfoPanel.gameObject.SetActive(true);
+
     }
 
     public void OnQuery(ResultType type, QueryData data)

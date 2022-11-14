@@ -120,6 +120,12 @@ public class UserMenu : LobbyMenu, IDbListener
     {
         SpawnError("Not implemented", "This menu is not implemented yet");
     }
+
+    public void ButtonPlay()
+    {
+        playButton.interactable = false;
+        MatchmakingManager.Instance.QuickMatch();
+    }
     #endregion
 
 }

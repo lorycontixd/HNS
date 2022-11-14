@@ -2956,13 +2956,13 @@ MonoBehaviour:
     SynchronizeType: 2
     Name: Grounded
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: FreeFall
   - Type: 1
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: MotionSpeed
   m_SynchronizeLayers:
-  - SynchronizeType: 0
+  - SynchronizeType: 2
     LayerIndex: 0
 --- !u!1 &4982894431952229915
 GameObject:

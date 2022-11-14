@@ -7,9 +7,10 @@ using Michsky.MUIP;
 
 public class InvitationNotification : MonoBehaviour
 {
-    public TextMeshProUGUI notificationText;
-    public ButtonManager acceptButton;
-    public ButtonManager denyButton;
+    public TextMeshProUGUI notificationTitle;
+    public TextMeshProUGUI notificatoinSubtitle;
+    public Button acceptButton;
+    public Button denyButton;
 
     void Start()
     {
@@ -23,12 +24,12 @@ public class InvitationNotification : MonoBehaviour
 
     public void Reset()
     {
-        notificationText.text = string.Empty;
+        notificatoinSubtitle.text = string.Empty;
     }
 
     public void UpdateUI(string username)
     {
-        notificationText.text = $"New invite from {username}";
+        notificatoinSubtitle.text = $"New invitation from {username}";
     }
 
     public void AcceptButton()

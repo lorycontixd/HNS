@@ -152,6 +152,11 @@ public class FriendsManager : MonoBehaviourPunCallbacks
 
     public override void OnFriendListUpdate(List<FriendInfo> friendsInfo)
     {
+        foreach(FriendInfo info in friendsInfo)
+        {
+            Debug.Log($"[ONFRIENDLISTUPDATE] Friend {info.UserId} -> {info.IsOnline} -> {info.IsInRoom}");
+        }
+        lastFriendlistUpdate = friendsInfo;
         onFriendStatusUpdate?.Invoke(friendsInfo);
     }
 

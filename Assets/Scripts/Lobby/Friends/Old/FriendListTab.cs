@@ -350,8 +350,9 @@ public class FriendListTab : MonoBehaviour
         receivedUserForFriendship = null;
     }
 
-    public void OpenFriendInfo(User friend)
+    public void OpenFriendInfo(FriendItem item)
     {
+        User friend = item.friend;
         friendInfoPanel.gameObject.SetActive(true);
         friendInfoPanel.SetFriend(friend);
         friendInfoPanel.UpdateUI();

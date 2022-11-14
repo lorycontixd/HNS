@@ -28,6 +28,7 @@ namespace StarterAssets
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
 		public void OnMove(InputValue value)
 		{
+			Debug.Log("Moving!!! " + value);
 			MoveInput(value.Get<Vector2>());
 		}
 
