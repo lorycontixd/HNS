@@ -169,7 +169,7 @@ public class DatabaseManager : Singleton<DatabaseManager>
         WWWForm form = new WWWForm();
         form.AddField("userid", id);
 
-        UnityWebRequest www = UnityWebRequest.Post("https://3fmetaverse.azurewebsites.net/php/searchuserbyid.php", form);
+        UnityWebRequest www = UnityWebRequest.Post(appAddress+"searchuserbyid.php", form);
         yield return www.SendWebRequest();
 
         if (www.result != UnityWebRequest.Result.Success)
@@ -345,6 +345,7 @@ public class DatabaseManager : Singleton<DatabaseManager>
         }
     }*/
 
+
     public IEnumerator GetFriendships2(int userid)
     {
         WWWForm form = new WWWForm();
@@ -374,12 +375,13 @@ public class DatabaseManager : Singleton<DatabaseManager>
     #endregion
 
     #region Party
-    public IEnumerator AddParty(string roomname, RoomOptions createdroom, string password, int creatorid)
+    public IEnumerator AddParty(string roomname, RoomOptions createdroom, string password, User creator)
     {
         WWWForm form = new WWWForm();
         form.AddField("name", roomname);
         form.AddField("password", password);
-        form.AddField("leaderid", creatorid);
+        form.AddField("leaderid", creator.id);
+        form.AddField("leaderusername", creator.username);
         form.AddField("isvisible", createdroom.IsVisible ? 1 : 0);
         form.AddField("isopen", createdroom.IsOpen ? 1 : 0);
 
@@ -447,7 +449,7 @@ public class DatabaseManager : Singleton<DatabaseManager>
     {
         Debug.Log("Parsing party text: " + text);
         string[] values = text.Split('\t');
-        if (values.Length != 8)
+        if (values.Length != 9)
         {
             Debug.LogError("Error: party values must be 8");
         }
@@ -456,15 +458,17 @@ public class DatabaseManager : Singleton<DatabaseManager>
         string partytoken = values[2];
         string hashedpassword = values[3];
         int leaderid = int.Parse(values[4]);
-        int playercount = int.Parse(values[5]);
-        bool isvisible = Convert.ToBoolean(int.Parse(values[6]));
-        bool isopen = Convert.ToBoolean(int.Parse(values[7]));
-        RoomOptions opts = new RoomOptions() { MaxPlayers = (byte)16, IsOpen = isopen, IsVisible = isvisible, PublishUserId = true };
-        return new Party(id, roomname, opts, partytoken, hashedpassword, playercount, leaderid, DateTime.Now, DateTime.Now);
+        string leaderusername = values[5];
+        int playercount = int.Parse(values[6]);
+        bool isvisible = Convert.ToBoolean(int.Parse(values[7]));
+        bool isopen = Convert.ToBoolean(int.Parse(values[8]));
+        RoomOptions opts = new RoomOptions() { MaxPlayers = (byte)MatchmakingManager.Instance.maxPlayers, IsOpen = isopen, IsVisible = isvisible, PublishUserId = true };
+        return new Party(id, roomname, opts, partytoken, hashedpassword, playercount, leaderid, leaderusername, DateTime.Now, DateTime.Now);
     }
 
     private User ParseUser(string text)
     {
+        Debug.Log("parsing user text: " + text);
         string[] values = text.Split('\t');
         if (values.Length != 8)
         {

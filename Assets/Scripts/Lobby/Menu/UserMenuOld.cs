@@ -176,7 +176,7 @@ public class UserMenuOld : LobbyMenu
             string roomname = "Party_" + LobbyNetworkManager.Instance.GetSessionUser().username;
             RoomOptions opts = new RoomOptions() { MaxPlayers = (byte)32, IsOpen = true, IsVisible = true, PublishUserId = true };
             string password = string.Empty;
-            StartCoroutine(DatabaseManager.In.AddParty(roomname, opts, password, LobbyNetworkManager.Instance.GetSessionUserID()));
+            StartCoroutine(DatabaseManager.In.AddParty(roomname, opts, password, LobbyNetworkManager.Instance.GetSessionUser()));
         }
     }
     #endregion

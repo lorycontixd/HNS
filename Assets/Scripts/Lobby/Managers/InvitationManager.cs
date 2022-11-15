@@ -55,6 +55,7 @@ public class InvitationManager : Singleton<InvitationManager>, IDbListener
         PartyMenu pmenu = (PartyMenu)LobbyMenuController.In.GetMenuByType(LobbyMenuType.PARTY);
         pmenu.SetOwner(pendingPartyCreator);
         pmenu.UpdateUI();
+        invitationNotification.gameObject.SetActive(false);
         pendingParty = null;
         pendingPartyCreator = null;
     }

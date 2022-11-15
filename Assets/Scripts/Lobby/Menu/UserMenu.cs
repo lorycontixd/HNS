@@ -33,6 +33,10 @@ public class UserMenu : LobbyMenu, IDbListener
     [Header("Friends")]
     public AddFriendTab addFriendTab;
 
+    [Header("Party")]
+    public PartyList partyList;
+
+
     public override void Start()
     {
         base.Start();
@@ -43,6 +47,7 @@ public class UserMenu : LobbyMenu, IDbListener
         bool parentSuccess = base.OnOpen();
         UpdateUI();
         LoadMenu();
+        partyList.Close();
         return true;
     }
 
@@ -88,7 +93,14 @@ public class UserMenu : LobbyMenu, IDbListener
     {
         if (PhotonNetwork.InRoom) // Must obviously be true
         {
-            LobbyNetworkManager.Instance.LoadMainRoom();
+            if (PhotonNetwork.CurrentRoom.Name.Contains("party"))
+            {
+
+            }
+            else
+            {
+                LobbyNetworkManager.Instance.LoadMainRoom();
+            }
         }
     }
     #endregion

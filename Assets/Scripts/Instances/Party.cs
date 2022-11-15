@@ -11,6 +11,7 @@ public class Party
     public string password;
     public int playercount;
     public int creatorid;
+    public string creatorusername;
     public DateTime creationdate;
     public DateTime lastupdate;
     public bool IsVisible { get {return roomopts.IsVisible; } }
@@ -19,8 +20,9 @@ public class Party
     private string phpdateformat = "d-m-Y H:i:s";
     private string localdateformat = "dd-MM-yyyy HH:mm:ss";
 
-    public Party(int id, string name, RoomOptions roomopts, string token, string password, int playercount, int creatorid, DateTime creationdate, DateTime lastupdate)
+    public Party(int id, string name, RoomOptions roomopts, string token, string password, int playercount, int creatorid, string creatorusername, DateTime creationdate, DateTime lastupdate)
     {
+        this.creatorusername = creatorusername;
         this.partyname = name;
         this.roomopts = roomopts;
         this.token = token;

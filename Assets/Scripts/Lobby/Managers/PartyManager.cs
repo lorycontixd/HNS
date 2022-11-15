@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PartyManager : MonoBehaviourPunCallbacks
 {
@@ -32,6 +33,9 @@ public class PartyManager : MonoBehaviourPunCallbacks
     private bool inparty = false; 
     public bool InParty { get { return inparty; } }
 
+    public UnityEvent<Party> onPartyCreated;
+    public UnityEvent<Party> onPartyJoined;
+
     private void Start()
     {
        DatabaseManager.In.onQuery.AddListener(OnQuery);
@@ -42,6 +46,17 @@ public class PartyManager : MonoBehaviourPunCallbacks
     }
 
 
+    public void CreateParty()
+    {
+        string name = $"{LobbyNetworkManager.Instance.GetSessionUser().username}_party";
+        RoomOptions opts = new RoomOptions();
+        opts.MaxPlayers = (byte)MatchmakingManager.Instance.maxPlayers;
+        opts.IsOpen = true;
+        opts.IsVisible = true;
+        opts.PublishUserId = true;
+        opts.SuppressPlayerInfo = false;
+        StartCoroutine(DatabaseManager.In.AddParty(name, opts, "", LobbyNetworkManager.Instance.GetSessionUser()));
+    }
 
     public void OnQuery(ResultType type, QueryData data)
     {
@@ -52,26 +67,32 @@ public class PartyManager : MonoBehaviourPunCallbacks
             {
                 party = partydata.party;
                 bool success = PhotonNetwork.CreateRoom(party.partyname, party.roomopts);
-                StartCoroutine(DatabaseManager.In.SearchUserByIDCoroutine(party.creatorid, "create_party"));
             }
         }
-        if (data.queryType == QueryType.SEARCHUSER)
+    }
+
+    // pun callbacks
+    #region Pun Callbacks
+    public override void OnJoinedRoom()
+    {
+        if (PhotonNetwork.InRoom)
         {
-            MySearchUserData userdata = (MySearchUserData)data;
-            if (type == ResultType.SUCCESS)
+            if (PhotonNetwork.CurrentRoom.Name.Contains("party"))
             {
-                if (userdata.extraInfo == "create_party")
+                // Created a party
+                if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
                 {
-                    if (party != null)
-                    {
-                        User creator = userdata.user;
-                        LobbyMenuController.In.SwitchMenu(LobbyMenuType.PARTY);
-                        PartyMenu partymenu = (PartyMenu)LobbyMenuController.In.GetMenuByType(LobbyMenuType.PARTY);
-                        partymenu.SetOwner(creator);
-                        partymenu.UpdateUI();
-                    }
+                    Debug.Log("[PartyManager] Created party");
+                    onPartyCreated?.Invoke(party);
+                    onPartyJoined?.Invoke(party);
+                }
+                else
+                {
+                    Debug.Log("[PartyManager] Joined party");
+                    onPartyJoined?.Invoke(party);
                 }
             }
         }
     }
+    #endregion
 }

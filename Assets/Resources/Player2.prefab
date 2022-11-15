@@ -2705,8 +2705,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canMove: 0
   canLook: 0
-  MoveSpeed: 2
-  SprintSpeed: 5.335
+  MoveSpeed: 5
+  SprintSpeed: 15.335
   RotationSmoothTime: 0.12
   SpeedChangeRate: 10
   LandingAudioClip: {fileID: 8300000, guid: ff697d3070687ce4583faa0561a145a2, type: 3}
