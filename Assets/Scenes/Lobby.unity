@@ -1730,8 +1730,8 @@ MonoBehaviour:
   friendsHolder: {fileID: 243419221}
   unacceptedFriendsHolder: {fileID: 1313496401}
   friendItem: {fileID: 7261263863580221484, guid: 212ec0643c8084d4bb801d0adfba540b, type: 3}
-  pendingFriendItem: {fileID: 0}
-  unacceptedFriendItem: {fileID: 0}
+  pendingFriendItem: {fileID: 7261263863580221484, guid: 6a731746b15413340a6b952db9fbadda, type: 3}
+  unacceptedFriendItem: {fileID: 7261263863580221484, guid: 73255fe2d57a8b7438e985d7648dd11a, type: 3}
 --- !u!1 &514547010
 GameObject:
   m_ObjectHideFlags: 0
@@ -6829,7 +6829,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1519573143}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1805127040}
+        m_TargetAssemblyTypeName: AddFriendTab, Assembly-CSharp
+        m_MethodName: FoundUserButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1525590699
 GameObject:
   m_ObjectHideFlags: 0
@@ -14488,7 +14500,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 636.92, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 90}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &8974158484334942646
@@ -16443,7 +16455,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 306.46, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 90}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &8974158484950389797

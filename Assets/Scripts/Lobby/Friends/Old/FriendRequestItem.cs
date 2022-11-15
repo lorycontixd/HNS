@@ -12,17 +12,11 @@ public class FriendRequestItem : MonoBehaviour
     public User sender = null;
 
     public TextMeshProUGUI usernameText;
-    public ButtonManager acceptButton;
-    public ButtonManager denyButton;
+    public Button acceptButton;
+    public Button denyButton;
 
     public UnityEvent<Friendship, User> onAccept;
     public UnityEvent<Friendship, User> onDeny;
-
-    private void Start()
-    {
-        acceptButton.onClick.AddListener(OnAccept);
-        denyButton.onClick.AddListener(OnDeny);
-    }
 
     public void SetFriendship(Friendship friendship, bool update = false)
     {
@@ -45,12 +39,12 @@ public class FriendRequestItem : MonoBehaviour
         }
     }
 
-    public void OnAccept()
+    public void ButtonAccept()
     {
-        onAccept?.Invoke(friendship, sender);
+        onAccept?.Invoke(null, sender);
     }
-    public void OnDeny()
+    public void ButtonDeny()
     {
-        onDeny?.Invoke(friendship, sender);
+        onAccept?.Invoke(null, sender);
     }
 }

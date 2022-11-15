@@ -373,11 +373,12 @@ public class FriendListTab : MonoBehaviour
     // On request accept
     public void OnRequestAccepted(Friendship friendship, User sender)
     {
+        Debug.Log("Request accepted!!");
         StartCoroutine(DatabaseManager.In.AcceptFriendship(sender, LobbyNetworkManager.Instance.GetSessionUser()));
     }
     public void OnRequestDenied(Friendship friendship, User sender)
     {
-
+        Debug.Log("Request denied!!");
     }
     // Query callback
     public void OnQuery(ResultType type, QueryData data)

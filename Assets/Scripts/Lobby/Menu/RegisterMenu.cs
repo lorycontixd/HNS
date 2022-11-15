@@ -105,10 +105,13 @@ public class RegisterMenu : LobbyMenu
             }
             else
             {
+                User user = registerdata.user;
                 AuthenticationValues auth = new AuthenticationValues();
                 auth.UserId = registerdata.user.username;
                 PhotonNetwork.AuthValues = auth;
                 LobbyNetworkManager.Instance.Connect();
+                LobbyNetworkManager.Instance.sessionUser = user;
+                LobbyNetworkManager.Instance.SetLogin(true);
                 // Redirected to Photon callback -> OnConnectedToMaster
             }
         }

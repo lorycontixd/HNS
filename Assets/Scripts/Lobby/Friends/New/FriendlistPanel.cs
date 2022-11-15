@@ -48,7 +48,7 @@ public class FriendlistPanel : MonoBehaviour, IDbListener
     {
         for (int i = 0; i < unacceptedFriendsHolder.childCount; i++)
         {
-            Destroy(friendsHolder.GetChild(i).gameObject);
+            Destroy(unacceptedFriendsHolder.GetChild(i).gameObject);
         }
     }
 
@@ -68,13 +68,30 @@ public class FriendlistPanel : MonoBehaviour, IDbListener
         }
         foreach(User user in pendingFriends)
         {
+            GameObject clone = Instantiate(pendingFriendItem, unacceptedFriendsHolder);
 
         }
         foreach(User user in unacceptedFriends)
         {
-
+            GameObject clone = Instantiate(unacceptedFriendItem, unacceptedFriendsHolder);
+            FriendRequestItem item = clone.GetComponent<FriendRequestItem>();
+            item.SetSender(user);
+            item.UpdateUI();
+            item.onAccept.AddListener(OnRequestAccepted);
+            item.onDeny.AddListener(OnRequestDenied);
         }
     }
+
+    public void OnRequestAccepted(Friendship friendship, User sender)
+    {
+        Debug.Log($"Friend request from {sender.username} accepted!!");
+        StartCoroutine(DatabaseManager.In.AcceptFriendship(sender, LobbyNetworkManager.Instance.GetSessionUser()));
+    }
+    public void OnRequestDenied(Friendship friendship, User sender)
+    {
+        Debug.Log($"Friend request from {sender.username} denied :(");
+    }
+
 
     public FriendItem FindFriend(string username)
     {
