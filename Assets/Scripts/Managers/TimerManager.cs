@@ -1,11 +1,32 @@
+using ExitGames.Client.Photon.StructWrapping;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class TimerManager : Singleton<TimerManager>
 {
     public List<Timer> timers = new List<Timer>();
+
+    public UnityEvent<Timer> onTimerEnd;
+
+    private void Start()
+    {
+    }
+    private void Update()
+    {
+        TickAllTimers();
+    }
+
+    private void TickAllTimers()
+    {
+        foreach(Timer t in timers)
+        {
+            t.Tick();
+        }
+    }
 
     public bool Add(Timer t, bool playOnAdd = true)
     {
@@ -14,6 +35,7 @@ public class TimerManager : Singleton<TimerManager>
             return false;
         }
         timers.Add(t);
+        t.onTimerEnd += OnTimerFinished;
         if (playOnAdd)
             t.Play();
         return true;
@@ -48,4 +70,20 @@ public class TimerManager : Singleton<TimerManager>
             throw new UnityException($"More than one timer exists with name {name}. This should not happen");
         }
     }
+    public Timer GetTimer(string name)
+    {
+        return timers.FirstOrDefault(t => t.name == name);
+    }
+    public Timer GetTimer(Timer timer)
+    {
+        return timers.FirstOrDefault(t => t == timer);
+    }
+
+    #region Listeners
+    private void OnTimerFinished(Timer timer)
+    {
+        Debug.Log($"Timer {timer.name} finisehd!!!");
+        onTimerEnd?.Invoke(timer);
+    }
+    #endregion
 }

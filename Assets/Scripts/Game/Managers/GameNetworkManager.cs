@@ -75,13 +75,12 @@ public class GameNetworkManager : MonoBehaviourPunCallbacks
             throw new UnityException("Joined game without being connected"); //Implement offline mode?
         }
         players = PhotonNetwork.CurrentRoom.Players;
-        yield return new WaitUntil(() => players.Count > 1);
+        yield return new WaitUntil(() => gameState == GameState.PREGAME);
         SpawnPlayer();
         SetupPhotonPlayer();
-        gameState = GameState.PREGAME;
         onGameStateChange?.Invoke(GameState.WAITINGFORPLAYERS, GameState.PREGAME);
-
-
+        UIManager.Instance.startGameButton.gameObject.SetActive(false);
+        UIManager.Instance.waitingForHostTextParent.gameObject.SetActive(false);
     }
     private void Update()
     {
@@ -140,13 +139,18 @@ public class GameNetworkManager : MonoBehaviourPunCallbacks
             if (lastGameState != GameState.SEARCHPHASE)
             {
                 // First frame in search phase
-
                 UIManager.Instance.gameTimerParent.gameObject.SetActive(false);
                 UIManager.Instance.gameTimer.gameObject.SetActive(false);
             }
         }
         lastGameState = gameState;
     }
+
+    public void MasterClientStartGame()
+    {
+        photonView.RPC("SetGameState", RpcTarget.All, GameState.WAITINGFORPLAYERS, GameState.PREGAME);
+    }
+
 
     /// <summary>
     /// 

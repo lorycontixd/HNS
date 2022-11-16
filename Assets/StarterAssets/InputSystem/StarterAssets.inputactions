@@ -51,54 +51,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "FasterRun",
-                    "type": "Button",
-                    "id": "f8bf2c65-c986-4415-9873-4826258ceea8",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "StrongerThrow",
-                    "type": "Button",
-                    "id": "b1b2c6db-7829-46d2-9f93-71e3bd4517c0",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "ListPlayers",
-                    "type": "Button",
-                    "id": "62c0ccd3-aede-49df-a907-f27f131742c3",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Emote1",
-                    "type": "Button",
-                    "id": "d21348ab-da09-4d9a-8dfc-c867058e4ef5",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Emote2",
-                    "type": "Button",
-                    "id": "1d6eef5e-bae0-410f-865d-f7811146733a",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Escape",
                     "type": "Button",
                     "id": "5e84a680-87cc-450f-8d82-242e3c20f2eb",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Fire1",
+                    "type": "Button",
+                    "id": "94653575-e11f-49a8-8f4b-0638aada7a29",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -294,127 +258,6 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "Two Modifiers",
-                    "id": "da386c1c-2dbc-445e-882b-b9619477e1e0",
-                    "path": "TwoModifiers",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "FasterRun",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "modifier1",
-                    "id": "b86ece1b-2d62-4a3e-901a-8b7901118944",
-                    "path": "<Keyboard>/leftCtrl",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KeyboardMouse",
-                    "action": "FasterRun",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "modifier2",
-                    "id": "8845aebf-196d-453e-b9f1-f48ddd30ec66",
-                    "path": "<Keyboard>/leftShift",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KeyboardMouse",
-                    "action": "FasterRun",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "binding",
-                    "id": "9df5028a-86e6-4b18-b431-520ef741a889",
-                    "path": "<Keyboard>/l",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KeyboardMouse",
-                    "action": "FasterRun",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "Two Modifiers",
-                    "id": "1e16fe07-f95a-4f84-8377-0d011465f027",
-                    "path": "TwoModifiers",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "StrongerThrow",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "modifier1",
-                    "id": "9e777882-d55b-41f0-9ac3-e1431b22e8e8",
-                    "path": "<Keyboard>/leftCtrl",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KeyboardMouse",
-                    "action": "StrongerThrow",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "modifier2",
-                    "id": "d5a57e3a-7313-4712-ba03-cd6cf2ca5049",
-                    "path": "<Keyboard>/leftShift",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KeyboardMouse",
-                    "action": "StrongerThrow",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "binding",
-                    "id": "3f26dfc9-d9ec-4a42-8038-0816dbbaeaed",
-                    "path": "<Keyboard>/k",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KeyboardMouse",
-                    "action": "StrongerThrow",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "",
-                    "id": "d01d7492-b277-419c-9a3c-58c7cfbf95a9",
-                    "path": "<Keyboard>/tab",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KeyboardMouse",
-                    "action": "ListPlayers",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "f53cf764-f67b-4296-bab9-c5e3d137489f",
-                    "path": "<Keyboard>/1",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KeyboardMouse",
-                    "action": "Emote1",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "7b0c9a99-b565-4189-a302-9bf682e4b34c",
-                    "path": "<Keyboard>/2",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KeyboardMouse",
-                    "action": "Emote2",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
                     "name": "",
                     "id": "19874cc0-cc19-489a-99a4-e8c992359253",
                     "path": "<Keyboard>/escape",
@@ -422,6 +265,17 @@
                     "processors": "",
                     "groups": "KeyboardMouse",
                     "action": "Escape",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "24f3e2ca-f906-497b-8345-1962374c08bb",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "Fire1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

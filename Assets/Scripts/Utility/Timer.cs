@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,7 +12,7 @@ public class Timer
     public bool isPaused;
     private float timer;
 
-    public UnityEvent<Timer> onTimerEnd;
+    public Action<Timer> onTimerEnd;
 
     public Timer()
     {
@@ -36,6 +37,7 @@ public class Timer
             if (timer <= 0f)
             {
                 onTimerEnd?.Invoke(this);
+                Stop();
             }
         }
     }

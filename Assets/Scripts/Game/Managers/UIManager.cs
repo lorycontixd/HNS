@@ -35,6 +35,10 @@ public class UIManager : MonoBehaviourPunCallbacks
     public TextMeshProUGUI gameTimer;
     public GameObject gameTimerParent;
 
+    public Button startGameButton;
+    public GameObject waitingForHostTextParent;
+    public TextMeshProUGUI waitingForHostText;
+
     [Header("Debug")]
     public Text roomDebugText;
     public TextMeshProUGUI debugText;
@@ -49,6 +53,17 @@ public class UIManager : MonoBehaviourPunCallbacks
         GameNetworkManager.Instance.onCounterPlayerSet.AddListener(OnCounterPlayerSet);
 
         roleTextParent.gameObject.SetActive(false);
+
+        if (PhotonNetwork.LocalPlayer.IsMasterClient)
+        {
+            startGameButton.gameObject.SetActive(true);
+            waitingForHostTextParent.gameObject.SetActive(false);
+        }
+        else
+        {
+            startGameButton.gameObject.SetActive(false);
+            waitingForHostTextParent.gameObject.SetActive(true);
+        }
     }
 
     private void Update()
