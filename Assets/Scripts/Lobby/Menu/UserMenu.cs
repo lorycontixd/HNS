@@ -135,6 +135,7 @@ public class UserMenu : LobbyMenu, IDbListener
 
     public void ButtonPlay()
     {
+        FriendsManager.Instance.stopSearch = true;
         playButton.interactable = false;
         MatchmakingManager.Instance.QuickMatch();
     }

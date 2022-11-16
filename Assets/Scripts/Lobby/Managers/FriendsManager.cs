@@ -41,6 +41,7 @@ public class FriendsManager : MonoBehaviourPunCallbacks
     [Header("Settings")]
     public float refreshRate = 3f;
     public bool canSearch = false;
+    public bool stopSearch = false;
 
     private float refreshRateTimestamp = 0f;
     private int searches = 0;
@@ -69,7 +70,7 @@ public class FriendsManager : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        canSearch = LobbyNetworkManager.Instance.GetSessionUser() != null;
+        canSearch = LobbyNetworkManager.Instance.GetSessionUser() != null && !stopSearch;
         if (canSearch && LobbyMenuController.In.activeMenu.hasFriendlist && PhotonNetwork.IsConnectedAndReady)
         {
             if (refreshRateTimestamp <= Time.time)
