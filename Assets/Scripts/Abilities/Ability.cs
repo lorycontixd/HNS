@@ -31,6 +31,7 @@ public abstract class Ability : ScriptableObject
     public List<GameState> validGameStates = new List<GameState>() { GameState.SEARCHPHASE };
     public List<string> tags = new List<string>();
 
+    public float duration;
     public float manaCost;
     public float castingTime;
     public float cooldown;

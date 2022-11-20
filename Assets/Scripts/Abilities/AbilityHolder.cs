@@ -17,6 +17,20 @@ public class AbilityHolder : MonoBehaviour
 
     public UnityEvent onAbilityTrigger;
 
+    public void SetOwner(MyPlayer player)
+    {
+        this.owner = player;
+    }
+    public void SetAbility(Ability ability)
+    {
+        this.ability = ability;
+    }
+    public void Initialize(MyPlayer player, Ability ability)
+    {
+        SetOwner(player);
+        SetAbility(ability);
+        ability.Initialize(this);
+    }
 
     public void Fire()
     {

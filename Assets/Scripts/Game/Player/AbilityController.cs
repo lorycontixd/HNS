@@ -1,4 +1,5 @@
 using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,16 +10,16 @@ using UnityEngine.InputSystem;
 public class AbilityController : MonoBehaviourPunCallbacks
 {
     public MyPlayer owner;
-    public int maxAbilities = 3;
 
     public List<AbilityHolder> abilityHolders = new List<AbilityHolder>();
 
-    private void Start()
+    private IEnumerator Start()
     {
         if (owner == null)
         {
             owner = GetComponent<MyPlayer>();
         }
+        yield return new WaitUntil(() => GameNetworkManager.Instance.gameState == GameState.PREGAME);
     }
 
     public void OnFire1(InputValue value)
@@ -39,6 +40,17 @@ public class AbilityController : MonoBehaviourPunCallbacks
             {
                 abilityHolders[1].Fire();
             }
+        }
+    }
+
+    public void AssignAbilities(List<Ability> roleabilities)
+    {
+        Debug.Log("role abilities coutn : " + roleabilities.Count);
+        for (int i=0; i<roleabilities.Count; i++)
+        {
+            AbilityHolder holder = gameObject.AddComponent<AbilityHolder>();
+            holder.Initialize(owner, roleabilities[i]);
+            abilityHolders.Add(holder);
         }
     }
 }

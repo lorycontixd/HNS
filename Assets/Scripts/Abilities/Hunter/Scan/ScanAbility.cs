@@ -4,10 +4,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Scan Ability", menuName = "Abilities/ScanAbility")]
+[CreateAssetMenu(fileName = "New Scan Ability", menuName = "Abilities/Hunter/Scan")]
 public class ScanAbility : Ability
 {
     public float scanRange;
+    private ScanAbilityUI uiManager;
+    public GameObject scanArrowUI;
 
     private List<Player> foundPlayers = new List<Player>();
     private List<GameObject> foundPlayerObjs = new List<GameObject>();
@@ -27,7 +29,7 @@ public class ScanAbility : Ability
         foundPlayers.Clear();
         foundPlayerObjs.Clear();
         closestPlayerObj = null;
-        int maxColliders = 20;
+        int maxColliders = 10000;
         Collider[] hitColliders = new Collider[maxColliders];
         int collidersFound = Physics.OverlapSphereNonAlloc(holder.owner.transform.position, scanRange, hitColliders);
         for (int i=0; i<collidersFound; i++)
@@ -35,11 +37,13 @@ public class ScanAbility : Ability
             if (hitColliders[i].tag == "Player" && hitColliders[i].transform != holder.owner.transform)
             {
                 foundPlayerObjs.Add(hitColliders[i].gameObject);
-                Player player = hitColliders[i].gameObject.GetComponent<PhotonView>().Controller;
-                foundPlayers.Add(player);
             }
         }
         Debug.Log("Found player objects nearby: " + foundPlayerObjs.Count);
+        if (foundPlayerObjs.Count > 0)
+        {
+            Debug.Log("First obj: " + foundPlayerObjs[0]);
+        }
 
         if (foundPlayerObjs.Count <= 0)
         {
@@ -48,30 +52,29 @@ public class ScanAbility : Ability
         }
         else
         {
-            if (foundPlayerObjs.Count != foundPlayers.Count)
+            for (int i=0; i<foundPlayerObjs.Count; i++)
             {
-                throw new UnityException($"[ScanAbility] Found players is different length than found player gameobjs. Not possible");
-            }
-            else
-            {
-                for (int i=0; i<foundPlayerObjs.Count; i++)
+                if (closestPlayerObj == null)
                 {
-                    if (closestPlayerObj == null)
+                    closestPlayerObj = foundPlayerObjs[i];
+                }
+                else
+                {
+                    if (Vector3.Distance(foundPlayerObjs[i].transform.position, holder.owner.transform.position) < Vector3.Distance(closestPlayerObj.transform.position, holder.owner.transform.position))
                     {
                         closestPlayerObj = foundPlayerObjs[i];
                     }
-                    else
-                    {
-                        if (Vector3.Distance(foundPlayerObjs[i].transform.position, holder.owner.transform.position) < Vector3.Distance(closestPlayerObj.transform.position, holder.owner.transform.position))
-                        {
-                            closestPlayerObj = foundPlayerObjs[i];
-                        }
-                    }
                 }
-                closestPlayer = closestPlayerObj.GetComponent<PhotonView>().Controller;
-                Debug.Log($"[ScanAbility] Found closest player: {closestPlayer.UserId}");
             }
+            Debug.Log("Closest player: " + closestPlayerObj);
+            closestPlayer = closestPlayerObj.GetComponent<PhotonView>().Controller;
+            Debug.Log($"[ScanAbility] Found closest player: {closestPlayer.UserId}   ({closestPlayer.NickName}");
         }
+
+        uiManager = holder.gameObject.AddComponent<ScanAbilityUI>();
+        uiManager.Initialize(this, holder.transform, closestPlayerObj.transform, this.duration);
+        uiManager.Display();
+
         fired = true;
         onFired?.Invoke(this);
     }

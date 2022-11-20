@@ -2627,13 +2627,13 @@ GameObject:
   - component: {fileID: 8684245501357527220}
   - component: {fileID: 4912015873396821188}
   - component: {fileID: 4912015873396821189}
+  - component: {fileID: 1596554811033707953}
   - component: {fileID: 4912015873396821191}
   - component: {fileID: 4912015873396821190}
   - component: {fileID: 4912015873396821193}
   - component: {fileID: 4717214351670927466}
-  - component: {fileID: 2934131005473438208}
   m_Layer: 8
-  m_Name: PlayerArmature
+  m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2874,8 +2874,8 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: e4ce1614-c754-48c1-9103-33130441661f
     m_ActionName: UI/New action
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
+  m_NeverAutoSwitchControlSchemes: 1
+  m_DefaultControlScheme: KeyboardMouse
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
@@ -2891,8 +2891,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68fabd0eae6f0d8408e183db62271297, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  role: 0
+  properties: {fileID: 1596554811033707953}
+  playerRenderer: {fileID: 3803887881121809724}
   cameraFollow: {fileID: 7339610652332334879}
   camera: {fileID: 380066514784957898}
+--- !u!114 &1596554811033707953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4912015873396821192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35f9615006cfc2f4d8dac03bc437db52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &4912015873396821191
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2978,27 +2993,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba0793da7de1563448936e628ac2c54e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  owner: {fileID: 0}
-  maxAbilities: 3
-  abilityHolders: []
---- !u!114 &2934131005473438208
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4912015873396821192}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1e2a1a14b1f040409e841c7c09fdc2d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   owner: {fileID: 4912015873396821189}
-  ability: {fileID: 11400000, guid: 537fb131ef71f55409989fac57a362d3, type: 2}
-  currentAbilityState: 0
-  onAbilityTrigger:
-    m_PersistentCalls:
-      m_Calls: []
+  abilityHolders: []
 --- !u!1 &4982894431952229915
 GameObject:
   m_ObjectHideFlags: 0

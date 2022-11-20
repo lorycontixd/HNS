@@ -45,10 +45,14 @@ public class GameNetworkManager : MonoBehaviourPunCallbacks
     public List<Transform> spawnPoints = new List<Transform>();
     public MyPlayer myplayer;
 
+    public Transform target;
+    public GameObject scanArrow;
+
     public GameState gameState;
     private GameState lastGameState;
 
     public Dictionary<int, Player> players = new Dictionary<int, Player>();
+    public List<GameObject> playerObjects = new List<GameObject>();
     public Dictionary<int, PhotonView> playerViews = new Dictionary<int, PhotonView>();
 
     [Header("Game Variables")]
@@ -76,12 +80,35 @@ public class GameNetworkManager : MonoBehaviourPunCallbacks
         }
         players = PhotonNetwork.CurrentRoom.Players;
         yield return new WaitUntil(() => gameState == GameState.PREGAME);
+        // Setup player
         SpawnPlayer();
+        playerObjects = GameObject.FindGameObjectsWithTag("Player").ToList();
+        myplayer = playerObjects.FirstOrDefault(obj => obj.GetComponent<PhotonView>().AmController).GetComponent<MyPlayer>();
+        Debug.Log("MyPlayer: " + myplayer);
         SetupPhotonPlayer();
+        myplayer.properties.SetPlayerPregameReady(true);
+
+        // Start round
         onGameStateChange?.Invoke(GameState.WAITINGFORPLAYERS, GameState.PREGAME);
         UIManager.Instance.startGameButton.gameObject.SetActive(false);
         UIManager.Instance.waitingForHostTextParent.gameObject.SetActive(false);
+
+        yield return new WaitUntil(() => ReadyChecker.Instance.allPlayersPregameReady);
+
+        // Assign roles
+        if (PhotonNetwork.LocalPlayer.IsMasterClient)
+        {
+            Player player = MasterClientChooseCounter();
+            photonView.RPC("SetHunter", RpcTarget.All, player);
+        }
+        // Assign abilities
+        bool islocalplayerhunter = (bool)myplayer.properties.playerProps["Hunter"];
+        Debug.Log("Is localplayer hunter: " + islocalplayerhunter);
+        List<Ability> roleabilities = AbilityManager.Instance.GetRoleAbilities(islocalplayerhunter);
+        AbilityController acontroller = myplayer.gameObject.GetComponent<AbilityController>();
+        acontroller.AssignAbilities(roleabilities);
     }
+
     private void Update()
     {
         
@@ -93,6 +120,7 @@ public class GameNetworkManager : MonoBehaviourPunCallbacks
                 UIManager.Instance.gameTimerParent.gameObject.SetActive(true);
                 UIManager.Instance.gameTimer.gameObject.SetActive(true);
                 pregameTimestamp = pregameDuration;
+                //StartCoroutine(SetCounterCoroutine());
             }
             else
             {
@@ -101,11 +129,6 @@ public class GameNetworkManager : MonoBehaviourPunCallbacks
                 UIManager.Instance.gameTimer.text = timer.ToString();
                 if (pregameTimestamp <= 0)
                 {
-                    if (PhotonNetwork.LocalPlayer.IsMasterClient)
-                    {
-                        Player player = MasterClientChooseCounter();
-                        photonView.RPC("SetCounterPlayer", RpcTarget.All, player);
-                    }
                     gameState = GameState.COUNTPHASE;
                     onGameStateChange?.Invoke(GameState.PREGAME, GameState.COUNTPHASE);
                 }
@@ -146,6 +169,16 @@ public class GameNetworkManager : MonoBehaviourPunCallbacks
         lastGameState = gameState;
     }
 
+    public IEnumerator SetCounterCoroutine()
+    {
+        if (PhotonNetwork.LocalPlayer.IsMasterClient)
+        {
+            yield return new WaitUntil(() => myplayer != null);
+            Player player = MasterClientChooseCounter();
+            photonView.RPC("SetCounterPlayer", RpcTarget.All, player);
+        }
+    }
+
     public void MasterClientStartGame()
     {
         photonView.RPC("SetGameState", RpcTarget.All, GameState.WAITINGFORPLAYERS, GameState.PREGAME);
@@ -167,10 +200,7 @@ public class GameNetworkManager : MonoBehaviourPunCallbacks
 
     public void SetupPhotonPlayer()
     {
-        Hashtable props = new Hashtable();
-        props.Add("Counter", false);
-        props.Add("FoundThisRound", false);
-        PhotonNetwork.LocalPlayer.SetCustomProperties(props);
+        myplayer.properties.Initialize();
     }
 
 
@@ -179,6 +209,7 @@ public class GameNetworkManager : MonoBehaviourPunCallbacks
         int index = UnityEngine.Random.Range(0, PhotonNetwork.CurrentRoom.PlayerCount);
         Player counter = PhotonNetwork.CurrentRoom.Players.Values.ToList()[index];
         return counter;
+        //return PhotonNetwork.LocalPlayer;
     }
 
     // Pun RPCs
@@ -190,19 +221,23 @@ public class GameNetworkManager : MonoBehaviourPunCallbacks
         gameState = newState;
         onGameStateChange?.Invoke(oldState, newState);
     }
+
     [PunRPC]
-    public void SetCounterPlayer(Player player)
+    public void SetHunter(Player player, PhotonMessageInfo info)
     {
         counterPlayer = player;
         onCounterPlayerSet?.Invoke(player);
+
+        Debug.LogFormat("Set counter player: {0} {1} {2} - {3}", info.Sender, info.photonView, info.SentServerTime, player.UserId);
         if (counterPlayer == PhotonNetwork.LocalPlayer)
         {
             //// I am the counter of this round
             // Update photon properties
-            Hashtable props = new Hashtable();
-            props.Add("Counter", true);
-            props.Add("FoundThisRound", false);
-            PhotonNetwork.LocalPlayer.SetCustomProperties(props);
+            myplayer.properties.SetRole(RoleType.HUNTER);
+        }
+        else
+        {
+            myplayer.properties.SetRole(RoleType.RUNNER);
         }
     }
     #endregion
@@ -227,6 +262,9 @@ public class GameNetworkManager : MonoBehaviourPunCallbacks
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         players = PhotonNetwork.CurrentRoom.Players;
+    }
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
+    {
     }
     #endregion
 

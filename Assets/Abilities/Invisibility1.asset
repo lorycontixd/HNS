@@ -9,21 +9,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b0970cbfb91a4245ada1786e0df9b6d, type: 3}
-  m_Name: ScanAbility1
+  m_Script: {fileID: 11500000, guid: 634a436d4e1dc3a48b6741b29e7b0e82, type: 3}
+  m_Name: Invisibility1
   m_EditorClassIdentifier: 
-  abilityName: ScanAbility
-  description: Allows the player to look for the closest runner with in a certain
-    range
+  abilityName: Invisibility
+  description: Makes player invisible for X seconds
   role: 0
-  type: 1
+  type: 2
   validCharacterStates: 000000000100000002000000
   validGameStates: 03000000
   tags: []
   duration: 5
-  manaCost: 10
+  manaCost: 40
   castingTime: 0
-  cooldown: 1
+  cooldown: 20
   onCooldown: 0
   onFired:
     m_PersistentCalls:
@@ -31,6 +30,3 @@ MonoBehaviour:
   onReady:
     m_PersistentCalls:
       m_Calls: []
-  scanRange: 1000
-  scanArrowUI: {fileID: 1064411277794975386, guid: 7706b29f8052f434db40931af3e557b8, type: 3}
-  fired: 1

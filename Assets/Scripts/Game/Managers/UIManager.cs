@@ -106,5 +106,6 @@ public class UIManager : MonoBehaviourPunCallbacks
             roleText.text = "Runner";
         }
     }
+
     #endregion
 }
