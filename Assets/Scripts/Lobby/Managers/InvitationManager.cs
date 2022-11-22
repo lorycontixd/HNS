@@ -50,14 +50,8 @@ public class InvitationManager : Singleton<InvitationManager>, IDbListener
 
         // Go to party
         PartyManager.Instance.party = pendingParty;
-        PhotonNetwork.JoinRoom(PartyManager.Instance.party.partyname);
-        LobbyMenuController.In.SwitchMenu(LobbyMenuType.PARTY);
-        PartyMenu pmenu = (PartyMenu)LobbyMenuController.In.GetMenuByType(LobbyMenuType.PARTY);
-        pmenu.SetOwner(pendingPartyCreator);
-        pmenu.UpdateUI();
-        invitationNotification.gameObject.SetActive(false);
-        pendingParty = null;
-        pendingPartyCreator = null;
+        StartCoroutine(DatabaseManager.In.EnterPartyCoroutine(LobbyNetworkManager.Instance.GetSessionUser(), pendingParty.token));
+        
     }
 
     public void OnInvitationDeclined()
@@ -98,6 +92,21 @@ public class InvitationManager : Singleton<InvitationManager>, IDbListener
                     invitationNotification.UpdateUI(pendingPartyCreator.username);
                     return;
                 }
+            }
+        }
+        if (data.queryType == QueryType.ENTERPARTY)
+        {
+            MyEnterPartyData partydata = (MyEnterPartyData)data;
+            if (type == ResultType.SUCCESS)
+            {
+                PhotonNetwork.JoinRoom(PartyManager.Instance.party.partyname);
+                LobbyMenuController.In.SwitchMenu(LobbyMenuType.PARTY);
+                PartyMenu pmenu = (PartyMenu)LobbyMenuController.In.GetMenuByType(LobbyMenuType.PARTY);
+                pmenu.SetOwner(pendingPartyCreator);
+                pmenu.UpdateUI();
+                invitationNotification.gameObject.SetActive(false);
+                pendingParty = null;
+                pendingPartyCreator = null;
             }
         }
     }

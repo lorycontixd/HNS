@@ -442,6 +442,38 @@ public class DatabaseManager : Singleton<DatabaseManager>
             }
         }
     }
+
+    public IEnumerator EnterPartyCoroutine(User user, string partytoken)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("partytoken", partytoken);
+        form.AddField("userid", user.id);
+
+        UnityWebRequest www = UnityWebRequest.Post(appAddress + "parties/enterparty.php", form);
+        yield return www.SendWebRequest();
+
+        if (www.result != UnityWebRequest.Result.Success)
+        {
+            Debug.Log("Error party search:  " + www.downloadHandler.text);
+            onQuery?.Invoke(ResultType.FAIL, new MyEnterPartyData("Unexpected error while connecting to server. Contact administration."));
+        }
+        else
+        {
+            string text = www.downloadHandler.text;
+            Debug.Log("Seach party result text: " + text);
+            if (!text.Contains("Error"))
+            {
+                Party party = ParseParty(text);
+                onQuery?.Invoke(ResultType.SUCCESS, new MyEnterPartyData(party));
+                Debug.Log("Party search success: " + www.downloadHandler.text);
+            }
+            else
+            {
+                Debug.Log("Party search fail: " + www.downloadHandler.text);
+                onQuery?.Invoke(ResultType.FAIL, new MyEnterPartyData("Failed to search party"));
+            }
+        }
+    }
     #endregion
 
 

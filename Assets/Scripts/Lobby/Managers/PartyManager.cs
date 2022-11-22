@@ -36,6 +36,11 @@ public class PartyManager : MonoBehaviourPunCallbacks
     public UnityEvent<Party> onPartyCreated;
     public UnityEvent<Party> onPartyJoined;
 
+    [Header("Settings")]
+    public float partyRefreshRate = 5;
+
+    private float timestamp;
+
     private void Start()
     {
        DatabaseManager.In.onQuery.AddListener(OnQuery);
@@ -43,6 +48,12 @@ public class PartyManager : MonoBehaviourPunCallbacks
 
     private void Update()
     {
+        if (!party.IsNull())
+        {
+            if (timestamp <= Time.time)
+            {
+            }
+        }
     }
 
 

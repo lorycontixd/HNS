@@ -236,3 +236,22 @@ public class MySearchPartyData : QueryData
         this.queryType = QueryType.SEARCHPARTY;
     }
 }
+
+public class MyEnterPartyData : QueryData
+{
+    public Party party;
+
+    public MyEnterPartyData(Party party, string extrainfo = "")
+    {
+        this.party = party;
+        this.extraInfo = extrainfo;
+        this.errorMessage = string.Empty;
+        this.queryType = QueryType.ENTERPARTY;
+    }
+    public MyEnterPartyData(string errorMessage)
+    {
+        this.party = null;
+        this.errorMessage = string.Empty;
+        this.queryType = QueryType.ENTERPARTY;
+    }
+}
